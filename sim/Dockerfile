@@ -32,7 +32,10 @@ COPY scenarios scratch/
 RUN ./ns3 build  && \
   cd out/lib && du -sh . && strip -v * && du -sh . && cd ../.. && \
   cd out/scratch && rm -r subdir ns$NS_VERS-scratch-simulator*
-
+COPY remove-prefix.sh remove-prefix.sh
+RUN ./remove-prefix.sh
+RUN mkdir out/src/fd-net-device/helper
+COPY scenarios/helper out/src/fd-net-device/helper
 ENV PATH="/go/bin:${PATH}"
 COPY wait-for-it-quic /wait-for-it-quic
 RUN cd /wait-for-it-quic && go build .
